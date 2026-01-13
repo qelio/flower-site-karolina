@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-key"></i> Админ-панель</h5>
+            </div>
+            <div class="card-body">
+                <h5>Добавить новый цветок</h5>
+                <form method="POST" action="/admin">
+                    <div class="mb-3">
+                        <label class="form-label">Тип цветка</label>
+                        <select name="flower_type" class="form-select" required>
+                            <option value="peony">Пион</option>
+                            <option value="tulip">Тюльпан</option>
+                            <option value="alstroemeria">Альстромерия</option>
+                            <option value="chrysanthemum">Хризантема</option>
+                            <option value="lily">Лилия</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Добавить цветок
+                    </button>
+                </form>
+                
+                <hr>
+                
+                <h5 class="mt-4">Статистика</h5>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Всего цветов в системе:</span>
+                        <span class="badge bg-primary">{{ total_flowers }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Активные цветы:</span>
+                        <span class="badge bg-success">{{ active_flowers }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Цветы в вазах:</span>
+                        <span class="badge bg-info">{{ flowers_in_vases }}</span>
+                    </li>
+                </ul>
+                
+                <div class="mt-4">
+                    <a href="/" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Вернуться в сад
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

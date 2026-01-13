@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <h2 class="text-center mb-4"><i class="fas fa-vase"></i> ✨ Вазы принцессы ✨</h2>
+        
+        <div class="row">
+            {% for vase in vases %}
+            <div class="col-md-4 mb-4">
+                <div class="card vase-card" data-vase-id="{{ vase.id }}">
+                    <div class="card-header text-center">
+                        <h5>Ваза {{ vase.id }}</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <!-- Изображение вазы с цветами -->
+                        <div class="vase-container mb-3">
+                            <img src="{{ url_for('static', filename='images/vases/vase' ~ vase.id ~ '.png') }}" 
+                                 class="vase-image" alt="Ваза {{ vase.id }}">
+                            {% if vase.has_flowers %}
+                            <div class="flowers-in-vase">
+                                {% for flower in vase.flowers %}
+                                <img src="{{ url_for('static', filename='images/flowers/' ~ flower.type ~ '.png') }}" 
+                                     class="flower-in-vase" 
+                                     title="{{ flower.type|title }}">
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="empty-vase-text">Пусто</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Таймеры -->
+                        <div class="timer-container">
+                            <div class="mb-2">
+                                <small class="text-muted">Смена воды через:</small>
+                                <div class="water-timer" id="water-timer-{{ vase.id }}">
+                                    {% if vase.next_water_change %}
+                                        {{ get_time_remaining(vase.next_water_change) }}
+                                    {% else %}
+                                        Нет цветов
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            {% if vase.has_flowers %}
+                            <div>
+                                <small class="text-muted">Живут еще:</small>
+                                {% for flower in vase.flowers %}
+                                <div class="life-timer" data-expires="{{ flower.expires_at.isoformat() }}">
+                                    {{ get_time_remaining(flower.expires_at) }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Кнопка смены воды -->
+                        {% if vase.needs_water and vase.has_flowers %}
+                        <button class="btn btn-warning btn-sm mt-2 change-water-btn" 
+                                data-vase-id="{{ vase.id }}">
+                            <i class="fas fa-tint"></i> Сменить воду
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-gift"></i> Новые цветы</h5>
+            </div>
+            <div class="card-body">
+                {% if untrimmed_flowers %}
+                <p>У тебя есть {{ untrimmed_flowers|length }} неподрезанных цветов!</p>
+                
+                <div class="row">
+                    {% for flower in untrimmed_flowers %}
+                    <div class="col-12 mb-3">
+                        <div class="card flower-card">
+                            <div class="card-body text-center">
+                                <img src="{{ url_for('static', filename='images/flowers/' ~ flower.type ~ '.png') }}" 
+                                     class="flower-image mb-2" alt="{{ flower.type }}">
+                                <p class="mb-1">{{ get_flower_name_ru(flower.type) }}</p>
+                                
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-primary trim-btn" 
+                                            data-flower-id="{{ flower.id }}"
+                                            data-vase-id="1">
+                                        Ваза 1
+                                    </button>
+                                    <button class="btn btn-outline-primary trim-btn" 
+                                            data-flower-id="{{ flower.id }}"
+                                            data-vase-id="2">
+                                        Ваза 2
+                                    </button>
+                                    <button class="btn btn-outline-primary trim-btn" 
+                                            data-flower-id="{{ flower.id }}"
+                                            data-vase-id="3">
+                                        Ваза 3
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-leaf fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Нет новых цветов</p>
+                </div>
+                {% endif %}
+                
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle"></i>
+                        Солнышко, подрежь цветы и выбери вазу, чтобы поставить их в воду.
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-clock"></i> Инструкция</h5>
+            </div>
+            <div class="card-body">
+                <ol class="small">
+                    <li>Каролиночка, подрежь новые цветы и выбери вазу</li>
+                    <li>Солнышко, меняй воду каждые 24 часа (кнопка появится)</li>
+                    <li>Принцесса, цветы живут от 5 до 14 дней в зависимости от типа</li>
+                    <li>Мое счастье, когда время истечет, цветы исчезнут</li>
+                </ol>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+
+<!-- Модальное окно для уведомлений -->
+<div class="modal fade" id="notificationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Уведомление</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="notificationMessage">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

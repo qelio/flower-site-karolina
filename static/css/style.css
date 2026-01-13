@@ -1,0 +1,206 @@
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+.vase-card {
+    transition: transform 0.3s;
+    height: 100%;
+}
+
+.vase-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.vase-container {
+    position: relative;
+    height: 200px;
+}
+
+.vase-image {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 180px;
+    z-index: 1;
+}
+
+.flowers-in-vase {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    z-index: 2;
+}
+
+.flower-in-vase {
+    width: 70px;
+    height: 70px;
+    margin: 0 5px;
+    animation: float 3s ease-in-out infinite;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.flower-in-vase:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.flower-in-vase:nth-child(3) {
+    animation-delay: 1s;
+}
+
+.empty-vase-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #999;
+    font-style: italic;
+}
+
+.flower-card {
+    transition: all 0.3s;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.flower-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.flower-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.timer-container {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.water-timer, .life-timer {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #198754;
+}
+
+.life-timer {
+    color: #dc3545;
+    font-size: 0.9em;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Анимация для новых действий */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(25, 135, 84, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(25, 135, 84, 0);
+    }
+}
+
+.new-flower {
+    animation: pulse 2s infinite;
+}
+
+.navbar.bg-primary {
+    background: linear-gradient(135deg, #d8c3ff 0%, #b39ddb 100%) !important;
+    border-bottom: 1px solid #9575cd;
+    box-shadow: 0 2px 10px rgba(179, 157, 219, 0.3);
+}
+
+/* Текст в шапке */
+.navbar.bg-primary .navbar-brand,
+.navbar.bg-primary .navbar-text,
+.navbar.bg-primary .navbar-text a {
+    color: #4a2c6d !important;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.navbar.bg-primary .navbar-brand {
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.navbar.bg-primary .navbar-brand i {
+    color: #7e57c2;
+}
+
+/* Кнопки или ссылки в шапке */
+.navbar.bg-primary a:hover {
+    color: #311b92 !important;
+    text-decoration: none;
+}
+
+/* Текущее время в шапке */
+#current-time {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-weight: 500;
+    color: #5e35b1 !important;
+    border: 1px solid rgba(142, 104, 201, 0.3);
+}
+
+/* Для админской шапки (если есть) */
+.card-header.bg-primary {
+    background: linear-gradient(135deg, #d8c3ff 0%, #b39ddb 100%) !important;
+    color: #4a2c6d !important;
+    border-bottom: 1px solid #9575cd;
+}
+
+/* 2. Карточка "Новые цветы" */
+.card-header.bg-success {
+    background: linear-gradient(135deg, #d8c3ff 0%, #c5b0ff 100%) !important;
+    color: #6a4c9c !important;
+    border-bottom: 1px solid #b39ddb;
+}
+
+.card-header.bg-success h5 {
+    font-weight: 600;
+}
+
+.card-header.bg-success i {
+    color: #9575cd;
+}
+
+/* 3. Карточка "Инструкция" */
+.card-header.bg-info {
+    background: linear-gradient(135deg, #e6e6ff 0%, #d6c6ff 100%) !important;
+    color: #6a4c9c !important;
+    border-bottom: 1px solid #b39ddb;
+}
+
+.card-header.bg-info h5 {
+    font-weight: 600;
+}
+
+.card-header.bg-info i {
+    color: #9575cd;
+}
